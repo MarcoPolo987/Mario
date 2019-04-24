@@ -20,6 +20,7 @@ public abstract class EnemyObj {
 		
 	}
 	public boolean collide() {
+		return false;
 		
 	}
 	public void draw() {

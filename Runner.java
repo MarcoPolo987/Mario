@@ -1,7 +1,10 @@
-import java.awt.*
-import javax.swing.*
-import java.util.*
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+
+import javax.swing.*;
 public class Runner {
+	private JPanel panel;
 	private Game game = new Game();
 	private Timer timer;
 	private int ticks;
@@ -9,19 +12,6 @@ public class Runner {
 	public static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	public static final int WIDTH = (int) (screenSize.getWidth()*3/4),HEIGHT=(int) (screenSize.getHeight()*3/4);
 	private static final int REFRESH_RATE = 10;
-	public Runner() {
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-					start();
-				} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-				}
-			}
-		});
-	}
-
 	public static void main(String[] args) {
 		new Runner().start();
 	}
@@ -29,13 +19,15 @@ public class Runner {
 		ArrayList<Ground> ground = grounds.getGround(); 
 		JFrame frame = new JFrame("Mario!");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		JPanel panel = new JPanel() {
+		panel = new JPanel() {
 			@Override
 			public void paintComponent(Graphics g) {
 				super.paintComponent(g);
-//				tank.draw(g);
-//				target.draw(g);
-//				p.draw(g);
+//				mario.draw(g);
+//				for(block : blocks){
+//					block.draw(g);
+//				}
+//				pipe.draw(g);
 //				arrow.draw(g);
 //				button.draw(g);
 				for(Ground ground : ground) {
@@ -50,20 +42,20 @@ public class Runner {
 		panel.repaint();
 		ActionMap map = panel.getActionMap();
 		InputMap inMap = panel.getInputMap();
-		inMap.put(KeyStroke.getKeyStroke("pressed UP"), "up");
-		inMap.put(KeyStroke.getKeyStroke("pressed W"), "up");
-		map.put("up", new AbstractAction() {
+		panel.getInputMap().put(KeyStroke.getKeyStroke("UP"),"up");
+		panel.getActionMap().put("up",new AbstractAction(){
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				hit("up");
 			}
 		});
-		inMap.put(KeyStroke.getKeyStroke("pressed DOWN"), "down");
-		inMap.put(KeyStroke.getKeyStroke("pressed W"), "down");
-		map.put("down", new AbstractAction() {
+		panel.getInputMap().put(KeyStroke.getKeyStroke("LEFT"),"left");
+		panel.getActionMap().put("left",new AbstractAction(){
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				hit("down");
+				hit("left");
 			}
 		});
 		panel.getInputMap().put(KeyStroke.getKeyStroke("RIGHT"),"right");
@@ -74,21 +66,26 @@ public class Runner {
 				hit("right");
 			}
 		});
-		public  void hit(String s) {
-		game.keyHit(s);
-		panel.repaint();
-	}
-		panel.getInputMap().put(KeyStroke.getKeyStroke("LEFT"),"left");
-		panel.getActionMap().put("left",new AbstractAction(){
+		panel.getInputMap().put(KeyStroke.getKeyStroke("DOWN"),"down");
+		panel.getActionMap().put("down",new AbstractAction(){
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				hit("left");
+				hit("down");
 			}
 		});
-		public  void hit(String s) {
+		panel.getInputMap().put(KeyStroke.getKeyStroke("SPACE"),"space");
+		panel.getActionMap().put("space",new AbstractAction(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				hit("space");
+			}
+		});
+	}
+	public  void hit(String s) {
 		game.keyHit(s);
 		panel.repaint();
 	}
-	}
 }
+

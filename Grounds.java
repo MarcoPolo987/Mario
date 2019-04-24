@@ -14,6 +14,8 @@ public class Grounds {
 		grounds.add(new Ground(400, 500));
 		grounds.add(new Ground(450, 500));
 		grounds.add(new Ground(500, 500));
+		grounds.add(new Ground(550, 500));
+		grounds.add(new Ground(600, 500));
 		grounds.add(new Ground(650, 500));
 		grounds.add(new Ground(700, 500));
 		grounds.add(new Ground(750, 500));
