@@ -2,14 +2,14 @@ import java.awt.*
 import javax.swing.*
 import java.util.*
 public class Runner {
-	private FroggerGame game = new FroggerGame();
+	private Game game = new Game();
 	private Timer timer;
 	private int ticks;
 	private Grounds grounds = new Grounds();
 	public static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	public static final int WIDTH = (int) (screenSize.getWidth()*3/4),HEIGHT=(int) (screenSize.getHeight()*3/4);
 	private static final int REFRESH_RATE = 10;
-	public FroggerGameRunner() {
+	public Runner() {
 		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
