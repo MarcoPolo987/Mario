@@ -1,12 +1,27 @@
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.util.ArrayList;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-
+import java.awt.*
+import javax.swing.*
+import java.util.*
 public class Runner {
+	private FroggerGame game = new FroggerGame();
+	private Timer timer;
+	private int ticks;
 	private Grounds grounds = new Grounds();
+	public static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	public static final int WIDTH = (int) (screenSize.getWidth()*3/4),HEIGHT=(int) (screenSize.getHeight()*3/4);
+	private static final int REFRESH_RATE = 10;
+	public FroggerGameRunner() {
+		EventQueue.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+					start();
+				} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+				}
+			}
+		});
+	}
+
 	public static void main(String[] args) {
 		new Runner().start();
 	}
@@ -33,5 +48,47 @@ public class Runner {
 		frame.pack();
 		frame.setVisible(true);
 		panel.repaint();
+		ActionMap map = panel.getActionMap();
+		InputMap inMap = panel.getInputMap();
+		inMap.put(KeyStroke.getKeyStroke("pressed UP"), "up");
+		inMap.put(KeyStroke.getKeyStroke("pressed W"), "up");
+		map.put("up", new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				hit("up");
+			}
+		});
+		inMap.put(KeyStroke.getKeyStroke("pressed DOWN"), "down");
+		inMap.put(KeyStroke.getKeyStroke("pressed W"), "down");
+		map.put("down", new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				hit("down");
+			}
+		});
+		panel.getInputMap().put(KeyStroke.getKeyStroke("RIGHT"),"right");
+		panel.getActionMap().put("right",new AbstractAction(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				hit("right");
+			}
+		});
+		public  void hit(String s) {
+		game.keyHit(s);
+		panel.repaint();
+	}
+		panel.getInputMap().put(KeyStroke.getKeyStroke("LEFT"),"left");
+		panel.getActionMap().put("left",new AbstractAction(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				hit("left");
+			}
+		});
+		public  void hit(String s) {
+		game.keyHit(s);
+		panel.repaint();
+	}
 	}
 }
