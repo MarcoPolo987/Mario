@@ -19,12 +19,18 @@ public abstract class EnemyObj {
 		this.rect= new Rectangle(x,y,w,h);
 		
 	}
-	public boolean collide() {
+	public boolean collides(Mario m) {
+		if(m.getrect().intersects(rect)) {
+			return true;
+		}
 		return false;
 		
 	}
-	public void draw() {
-		
+	public void draw(Graphics g) {
+		g.drawImage(i, x, y, w, h, null);
+	}
+	public Rectangle getrect() {
+		return rect;
 	}
 
 }
