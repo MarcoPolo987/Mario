@@ -1,0 +1,42 @@
+import java.awt.*;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
+public abstract class Character {
+ private static final int WIDTH=50,HEIGHT=50;
+ private int x,y;
+ private Rectangle rect;
+ private Image img;
+ public Character(int x1,int y1, int WIDTH1, int HEIGHT1) {
+	 x=x1;
+	 y=y1;
+	 this.rect= new Rectangle(x,y,WIDTH,HEIGHT);
+	 try {
+			
+img=ImageIO.read(this.getClass().getResource(".png"));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+ }
+ public int getX() {
+	return this.x; 
+ }
+ public int getY() {
+	 return this.y;
+ }
+ public Rectangle getRect() {
+	 return this.rect;
+ }
+ public void move() {
+	 rect.translate(x,y);
+ }
+ public boolean collide(EnemyObj e) {
+	 if (this.rect.intersects(e.getRect())){
+		 return true;
+	 }
+	 return false;
+ }
+ public abstract void draw(Graphics g);
+}
