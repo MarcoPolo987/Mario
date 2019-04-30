@@ -7,6 +7,8 @@ public class Runner {
 	private JPanel panel;
 	private Game game = new Game();
 	private Timer timer;
+	private Mario mario = new Mario(5, 5);
+	private Blocks blockss = new Blocks();
 	private int ticks;
 	private Grounds grounds = new Grounds();
 	public static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -17,16 +19,17 @@ public class Runner {
 	}
 	public void start() {
 		ArrayList<Ground> ground = grounds.getGround(); 
+		ArrayList<Block> blocks = blockss.getBlocks(); 
 		JFrame frame = new JFrame("Mario!");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		panel = new JPanel() {
 			@Override
 			public void paintComponent(Graphics g) {
 				super.paintComponent(g);
-//				mario.draw(g);
-//				for(block : blocks){
-//					block.draw(g);
-//				}
+				//mario.draw(g);
+				for(Block block : blocks){
+					block.draw(g);
+				}
 //				pipe.draw(g);
 //				arrow.draw(g);
 //				button.draw(g);
@@ -39,6 +42,7 @@ public class Runner {
 		frame.add(panel);
 		frame.pack();
 		frame.setVisible(true);
+		panel.setBackground(new Color(135,206,250));
 		panel.repaint();
 		ActionMap map = panel.getActionMap();
 		InputMap inMap = panel.getInputMap();
@@ -84,8 +88,24 @@ public class Runner {
 		});
 	}
 	public  void hit(String s) {
-		game.keyHit(s);
+		System.out.println(mario.getX()+""+ mario.getY());
+		keyHit(s);
 		panel.repaint();
+	}
+	public void keyHit(String s) {
+		System.out.println("In mario game (keyHit): "+s);
+		if(s.equals("right")) {
+			mario.moveRight();
+		}
+		if(s.equals("left")) {
+			mario.moveLeft();
+		}
+		if(s.equals("up")) {
+			mario.jump();
+		}
+		if(s.equals("down")) {
+			mario.crouch();
+		}
 	}
 }
 
