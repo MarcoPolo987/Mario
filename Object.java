@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 public class Object {
-	public final int scrollSpeed = 	-3;
+	public final int scrollSpeed = 	3;
 	private int width;
 	private int height;
 	private int xCord;
