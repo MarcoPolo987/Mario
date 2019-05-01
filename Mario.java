@@ -23,17 +23,18 @@ public class Mario extends Character{
 //			 // TODO Auto-generated catch block
 //			 e1.printStackTrace();
 //		 }
+		//getImage();
 	 }
 	 private static Image getImage() {
 		 openSpriteSheet();
 		 if(img == null)
-			 img= openImageFromSpriteSheet(50, 50, 50, 50);
+			 img= openImageFromSpriteSheet(10, 10, 10, 10);
 		 return img;
 	 }
 	 private static void openSpriteSheet() {
 			if(spriteSheet==null) {
 				try {
-					spriteSheet = ImageIO.read(new File("spritesheet.gif"));
+					spriteSheet = ImageIO.read(new File("spritesheet(1).png"));
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
