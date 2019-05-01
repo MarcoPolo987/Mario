@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.*;
@@ -8,8 +9,9 @@ public class Runner {
 	private Game game = new Game();
 	private Timer timer;
 	private Mario mario = new Mario(5, 5);
+	private MysteryBlock m = new MysteryBlock(150, 300);
 	private Blocks blockss = new Blocks();
-	private int ticks;
+	private int ticks, sx;
 	private Grounds grounds = new Grounds();
 	public static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	public static final int WIDTH = (int) (screenSize.getWidth()*3/4),HEIGHT=(int) (screenSize.getHeight()*3/4);
@@ -21,23 +23,38 @@ public class Runner {
 		ArrayList<Ground> ground = grounds.getGround(); 
 		ArrayList<Block> blocks = blockss.getBlocks(); 
 		JFrame frame = new JFrame("Mario!");
+		timer = new Timer(sx, null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		panel = new JPanel() {
 			@Override
 			public void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				//mario.draw(g);
+				mario.draw(g);
 				for(Block block : blocks){
 					block.draw(g);
 				}
-//				pipe.draw(g);
-//				arrow.draw(g);
-//				button.draw(g);
+				m.draw(g);
+				//				pipe.draw(g);
+				//				arrow.draw(g);
+				//				button.draw(g);
 				for(Ground ground : ground) {
 					ground.draw(g);
 				}
 			};	
 		};
+		timer.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//System.out.println("timer went off!");
+				for(Ground g : ground) {
+					System.out.println(mario.stand(g));
+					if(mario.stand(g)) {
+						
+					}
+				}
+				panel.repaint();
+			}
+		});
 		panel.setPreferredSize(new Dimension(800,550));
 		frame.add(panel);
 		frame.pack();
@@ -52,6 +69,7 @@ public class Runner {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				hit("up");
+				mario.fall(ground);
 			}
 		});
 		panel.getInputMap().put(KeyStroke.getKeyStroke("LEFT"),"left");
@@ -88,7 +106,8 @@ public class Runner {
 		});
 	}
 	public  void hit(String s) {
-		System.out.println(mario.getX()+""+ mario.getY());
+		//System.out.println(mario.getX()+""+ mario.getY());
+		timer.start();
 		keyHit(s);
 		panel.repaint();
 	}
