@@ -1,2 +1,2 @@
 ## Mario
-# Gabriel Is Amazing!
+# Gabriel Is ok!
