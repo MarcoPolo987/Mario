@@ -65,23 +65,20 @@ public class Mario extends Character{
 		y=j;
 	}
 	public  void moveRight() {
-		rect.translate(x+1,y);
+		rect.translate(x+5,y);
 		x+=5;
-//		System.out.println(x);
 	}
 	public  void moveLeft() {
-		rect.translate(x-1,y+1);
+		rect.translate(x-5,y);
 		x-=5;
 	}
 	public  void jump() {
 		y-=30;
-		
-		//rect.translate(x, y-2);
+		rect.translate(x, y-30);
 	}
 	public  void crouch() {
 		y+=5;
-		this.rect.translate(0, 5);
-		//rect.translate(x-2, y-2);
+		this.rect.translate(x, y+5);
 	}
 	public boolean collide(EnemyObj e) {
 		if (this.rect.intersects(e.getRect())){
