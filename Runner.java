@@ -11,6 +11,8 @@ public class Runner {
 	private Mario mario = new Mario(5, 5);
 	private MysteryBlock m = new MysteryBlock(150, 300);
 	private Blocks blockss = new Blocks();
+	private Koopa k = new Koopa(150, 250);
+	private Bowser boss = new Bowser(300, 250);
 	private int ticks, sx;
 	private Grounds grounds = new Grounds();
 	public static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -46,13 +48,14 @@ public class Runner {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//System.out.println("timer went off!");
-				for(Ground g : ground) {
-					System.out.println(mario.stand(g));
-					if(mario.stand(g)) {
-						
-					}
-				}
-				panel.repaint();
+//				for(Ground g : ground) {
+//					System.out.println(mario.stand(g));
+//					if(mario.stand(g)) {
+//						
+//					}
+//				}
+				//mario.move();
+				//panel.repaint();
 			}
 		});
 		panel.setPreferredSize(new Dimension(800,550));
@@ -118,6 +121,9 @@ public class Runner {
 		}
 		if(s.equals("left")) {
 			mario.moveLeft();
+		}
+		if(s.equals("space")) {
+			mario.jump();
 		}
 		if(s.equals("up")) {
 			mario.jump();
