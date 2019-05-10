@@ -11,6 +11,7 @@ public class Runner {
 	private Mario mario = new Mario(155, 225);
 	private MysteryBlock m = new MysteryBlock(150, 300);
 	private Blocks blockss = new Blocks();
+	private scrollChecks scrollss= new scrollChecks();
 	private Koopa k = new Koopa(150, 450);
 	private Bowser boss = new Bowser(300, 450);
 	private int ticks, sx;
@@ -33,6 +34,7 @@ public class Runner {
 		
 		ArrayList<Ground> ground = grounds.getGround(); 
 		ArrayList<Block> blocks = blockss.getBlocks(); 
+		ArrayList<scrollCheck> scrolls= scrollss.getScroll();
 		JFrame frame = new JFrame("Mario!");
 		timer = new Timer(sx, null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
