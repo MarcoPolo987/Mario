@@ -7,15 +7,16 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class Koopa extends EnemyObj {
-
+	private int x=0, y=0;
 	Rectangle rect;
-	private int w = 50;
-	private int h = 50;
+	private static final int WIDTH=50,HEIGHT=50;
 	private BufferedImage myPicture = null;
 
 	public Koopa(int x,int y) {
-		super(x,y);
-		this.rect= new Rectangle(x,y,w,h);
+		super(x, y);
+		this.x=x;
+		this.y=y;
+		this.rect= new Rectangle(x,y,WIDTH, HEIGHT);
 		
 		try {
 			myPicture= ImageIO.read(this.getClass().getResource("images.png"));
@@ -24,6 +25,12 @@ public class Koopa extends EnemyObj {
 			e.printStackTrace();
 		}
 	}
+	public int getX() {
+		return x;
+	}
+	public int getY() {
+		return y;
+	}
 	public boolean collides(Mario m) {
 		if(m.getRect().intersects(rect)) {
 			return true;
@@ -31,15 +38,53 @@ public class Koopa extends EnemyObj {
 		return false;
 		
 	}
-	
-	public void draw(Graphics g,int x,int y) {
-		g.drawImage(myPicture, x, y, w, h, null);
+
+	public void draw(Graphics g) {
+		g.drawImage(myPicture, x, y, WIDTH, HEIGHT, null);
 	}
 	public Rectangle getrect() {
 		return rect;
-		
+
 	}
-	
+	private boolean t=false;
+	public  void move(Mario m) {
+		if(t) {
+			moveRight();
+			if(x>800) {
+				t=false;
+			}
+		}
+		else {
+			moveLeft();
+		if(x<0) {
+			t=true;
+		}
+	}
+}
+public  void moveRight() {
+	//rect.translate(x+1,y);
+	x+=1;
+	//System.out.println(x);
+	}
+	public  void moveLeft() {
+		//rect.translate(x-1,y+1);
+		x-=1;
+	}
+	@Override
+	public void moveuntilcollide(Mario m) {
+		{
+			while(collides(m)!=true) {
+				while(x<800) {
+					this.moveRight();
+				}
+				while(x>0) {
+					this.moveLeft();
+				}
+			}
+		}
+	}
+
+
 
 
 }
