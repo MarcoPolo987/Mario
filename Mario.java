@@ -42,17 +42,16 @@ public class Mario extends Character{
 		y=j;
 	}
 	public  void moveRight() {
-		x+=5;
-		rect.translate(5, 0);
+		right=true;
 	}
 	public  void moveLeft() {
-		x-=5;
-		rect.translate(-5, 0);
+		left=true;
 	}
 	public  void jump() {
-		y-=75;
-		initY-=75;
-		rect.translate(0, -75);
+		if(onGround) {
+			ySpeed = -20;
+		}
+		up = true;
 	}
 	public  void crouch() {
 	}
@@ -82,11 +81,26 @@ public class Mario extends Character{
 		return true;
 	}
 	public void move(ArrayList<Object> o) {
+		y += ySpeed;
+		ySpeed += 1;
 		if(isSafe(o)) {	
-			time+=.01;
-			y=initY+(int) (1*(20*10*Math.sin(90))*time+gravity+time*time/2);
-			rect.translate(0, initY+(int) (1*(20*10*Math.sin(90))*time+gravity+time*time/2));
+			ySpeed=0;
+			onGround=true;
 		}
+		else {
+			onGround=false;
+		}
+		if(left) {
+			x -=5;
+		}
+		if(right) {
+			x += 5;
+		}
+// 		if(isSafe(o)) {	
+// 			time+=.01;
+// 			y=initY+(int) (1*(20*10*Math.sin(90))*time+gravity+time*time/2);
+// 			rect.translate(0, initY+(int) (1*(20*10*Math.sin(90))*time+gravity+time*time/2));
+// 		}
 	}
 	@Override
 	public void draw(Graphics g) {
