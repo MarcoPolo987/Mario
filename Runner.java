@@ -2,23 +2,24 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.*;
 public class Runner {
 	private JPanel panel;
-	private Game game = new Game();
-	private Timer timer;
-	private Mario mario = new Mario(155, 225);
-	private MysteryBlock m = new MysteryBlock(150, 300);
-	private Blocks blockss = new Blocks();
-	private scrollChecks scrollss= new scrollChecks();
-	private Koopa k = new Koopa(150, 450);
-	private Bowser boss = new Bowser(300, 450);
-	private int ticks, sx;
-	private Grounds grounds = new Grounds();
 	public static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	public static final int WIDTH = (int) (screenSize.getWidth()*3/4),HEIGHT=(int) (screenSize.getHeight()*3/4);
+	private Game game = new Game();
+	private Timer timer;
+	private Mario mario = new Mario(155, HEIGHT-250);
+	private MysteryBlock m = new MysteryBlock(150, HEIGHT-200);
+	private Koopa k = new Koopa(150, HEIGHT-50);
+	private Bowser boss = new Bowser(300, 450);
+	private int ticks, sx;
+	private Blocks blockss = new Blocks(WIDTH, HEIGHT);
+	private Grounds grounds = new Grounds(WIDTH, HEIGHT);
 	private static final int REFRESH_RATE = 10;
+	private ArrayList<Object> o = new ArrayList<>();
 	public static void main(String[] args) {
 		new Runner().start();
 	}
@@ -29,12 +30,19 @@ public class Runner {
 		if(ticks %hurts == 0) {
 			System.out.println(ticks/hurts+" seconds");
 		}
+		panel.repaint();
 	}
 	public void start() {
 		
 		ArrayList<Ground> ground = grounds.getGround(); 
 		ArrayList<Block> blocks = blockss.getBlocks(); 
-		ArrayList<scrollCheck> scrolls= scrollss.getScroll();
+		for(Ground f : ground) {
+			o.add(f);
+		}
+		for(Block b : blocks) {
+			o.add(b);
+		}
+		o.add(m);
 		JFrame frame = new JFrame("Mario!");
 		timer = new Timer(sx, null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -51,8 +59,6 @@ public class Runner {
 				m.draw(g);
 				k.draw(g);
 				//				pipe.draw(g);
-				//				arrow.draw(g);
-				//				button.draw(g);
 				for(Ground ground : ground) {
 					ground.draw(g);
 				}
@@ -62,8 +68,8 @@ public class Runner {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				updateGame();
-				mario.move();
-				k.move(mario);
+				mario.move(o);
+				k.move();
 				panel.repaint();
 			}
 		});
@@ -84,7 +90,7 @@ public class Runner {
 ////			}
 //			}
 //		});
-		panel.setPreferredSize(new Dimension(800,550));
+		panel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		frame.add(panel);
 		frame.pack();
 		frame.setVisible(true);
@@ -98,8 +104,7 @@ public class Runner {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				hit("up");
-				mario.fall(ground);
-			}
+				}
 		});
 		panel.getInputMap().put(KeyStroke.getKeyStroke("LEFT"),"left");
 		panel.getActionMap().put("left",new AbstractAction(){
@@ -144,27 +149,10 @@ public class Runner {
 	public void keyHit(String s) {
 		System.out.println("In mario game (keyHit): "+s);
 		if(s.equals("right")) {
-			if(mario.getX()!=350) {
-				mario.moveRight();
-			}
-			else if(ground.get(ground.size()-1).getX()!=800){
-			scrol();
-			}
-			else {
-				mario.moveRight();
-			}
+			mario.moveRight();
 		}
 		if(s.equals("left")) {
-			if(mario.getX()>350) {
-				
-				
-				}
-			else if(ground.get(0).getX()!=0){
-				bscrol();
-				}
-			else {
-				mario.moveLeft();
-			}
+			mario.moveLeft();
 		}
 		if(s.equals("space")) {
 			mario.jump();
@@ -175,29 +163,6 @@ public class Runner {
 		if(s.equals("down")) {
 			mario.crouch();
 		}
-	}
-	
-	private void scrol() {
-		for(int q = 0; q < 5; q++) {
-			for(int i = 0; i < blocks.size();i++ ) {
-				blocks.get(i).scroll();
-			}
-			for (int i=0;i<ground.size();i++) {
-				ground.get(i).scroll();
-			}	
-		}
-		
-	}
-	private void bscrol() {
-		for(int q = 0; q < 5; q++) {
-			for(int i = 0; i < blocks.size();i++ ) {
-				blocks.get(i).bScroll();
-			}
-			for (int i=0;i<ground.size();i++) {
-				ground.get(i).bScroll();
-			}	
-		}
-		
 	}
 }
 
