@@ -20,6 +20,8 @@ public class Runner {
 	private Grounds grounds = new Grounds(WIDTH, HEIGHT);
 	private static final int REFRESH_RATE = 10;
 	private ArrayList<Object> o = new ArrayList<>();
+	ArrayList<Ground> ground = grounds.getGround(); 
+	ArrayList<Block> blocks = blockss.getBlocks(); 
 	public static void main(String[] args) {
 		new Runner().start();
 	}
@@ -34,8 +36,7 @@ public class Runner {
 	}
 	public void start() {
 		
-		ArrayList<Ground> ground = grounds.getGround(); 
-		ArrayList<Block> blocks = blockss.getBlocks(); 
+		
 		for(Ground f : ground) {
 			o.add(f);
 		}
@@ -149,10 +150,27 @@ public class Runner {
 	public void keyHit(String s) {
 		System.out.println("In mario game (keyHit): "+s);
 		if(s.equals("right")) {
-			mario.moveRight();
+			if(mario.getX()!=350) {
+				mario.moveRight();
+			}
+			else if(ground.get(ground.size()-1).getX()!=800){
+			scrol();
+			}
+			else {
+				mario.moveRight();
+			}
 		}
 		if(s.equals("left")) {
-			mario.moveLeft();
+			if(mario.getX()>350) {
+				
+				
+				}
+			else if(ground.get(0).getX()!=0){
+				bscrol();
+				}
+			else {
+				mario.moveLeft();
+			}
 		}
 		if(s.equals("space")) {
 			mario.jump();
@@ -163,6 +181,28 @@ public class Runner {
 		if(s.equals("down")) {
 			mario.crouch();
 		}
+	}
+	private void scrol() {
+		for(int q = 0; q < 5; q++) {
+			for(int i = 0; i < blocks.size();i++ ) {
+				blocks.get(i).scroll();
+			}
+			for (int i=0;i<ground.size();i++) {
+				ground.get(i).scroll();
+			}	
+		}
+		
+	}
+	private void bscrol() {
+		for(int q = 0; q < 5; q++) {
+			for(int i = 0; i < blocks.size();i++ ) {
+				blocks.get(i).bScroll();
+			}
+			for (int i=0;i<ground.size();i++) {
+				ground.get(i).bScroll();
+			}	
+		}
+		
 	}
 }
 
