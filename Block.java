@@ -7,6 +7,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class Block {
+	public final int scrollSpeed = -1;
 	private static final int WIDTH=50;
 	private static final int HEIGHT=50;
 	 private int x,y;
@@ -16,10 +17,9 @@ public class Block {
 	 public Block(int x1,int y1) {
 		 x=x1;
 		 y=y1;
-		;
 		 this.rect= new Rectangle(x,y,WIDTH,HEIGHT);
 		 try {
-				img=ImageIO.read(this.getClass().getResource("blocks.png"));
+				img=ImageIO.read(this.getClass().getResource("Brick.jpg"));
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
@@ -29,5 +29,14 @@ public class Block {
 	 }
 	 public Rectangle getBlock() {
 		return this.rect;
+	 }
+	 
+	 public void scroll() {
+		 this.rect.translate(x+scrollSpeed,y);
+		 x+=scrollSpeed;
+	 }
+	 public void bScroll() {
+		 this.rect.translate(x-scrollSpeed,y);
+		 x-=scrollSpeed;
 	 }
 }

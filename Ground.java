@@ -1,9 +1,11 @@
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 public class Ground {
 	private static final int WIDT = 50, HEIGH=50;
+	private int scrollSpeed= -1;
 	private Rectangle rect;
 	private int x, y;
 	private Image img;
@@ -24,4 +26,16 @@ public class Ground {
 	public Rectangle getRect() {
 		return rect;
 	}
-}
+	public void scroll() {
+		this.rect.translate(x+scrollSpeed,y);
+		x+=scrollSpeed;
+	}
+	 public void bScroll() {
+		 this.rect.translate(x-scrollSpeed,y);
+		 x-=scrollSpeed;
+	 }
+	 
+	 public int getX() {
+		 return this.x;
+	 }
+} 
