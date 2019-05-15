@@ -2,16 +2,25 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 public class Bowser extends EnemyObj {
-	private Image i;
 	Rectangle rect;
-	private int w = 50;
-	private int h = 50;
+	private static final int WIDTH=50,HEIGHT=50;
 	private BufferedImage myPicture = null;
+	private int x=0, y=0;
 	public Bowser(int x,int y) {
 		super(x,y);
-		this.rect= new Rectangle(x,y,w,h);
+		this.y=y;
+		this.rect= new Rectangle(x,y,WIDTH,HEIGHT);
+		try {
+			myPicture= ImageIO.read(this.getClass().getResource("download.png"));
+		}
+		catch(IOException e) {
+			e.printStackTrace();
+		}
 	
 }
 public boolean collides(Mario m) {
@@ -21,16 +30,40 @@ public boolean collides(Mario m) {
 	return false;
 	
 }
-//public boolean hit(Mario m,Fireball f) {
-//	if(m.getRect().intersects(f.getrect())) {
-//		return true;
-	
-//}
-//	return false;
-//}
+public int getX() {
+	return x;
+}
+public int getY() {
+	return y;
+}
+private boolean t=false;
+public  void move(Mario m) {
+	if(t) {
+		moveRight();
+		if(x>800) {
+			t=false;
+		}
+	}
+	else {
+		moveLeft();
+	if(x<0) {
+		t=true;
+	}
+}
+}
+public  void moveRight() {
+	//rect.translate(x+1,y);
+	x+=1;
+	//System.out.println(x);
+	}
+	public  void moveLeft() {
+		//rect.translate(x-1,y+1);
+		x-=1;
+	}
 
-public void draw(Graphics g,int x,int y) {
-	g.drawImage(i, x, y, w, h, null);
+
+public void draw(Graphics g) {
+	g.drawImage(myPicture, x, y, WIDTH, HEIGHT, null);
 }
 public Rectangle getrect() {
 	return rect;
