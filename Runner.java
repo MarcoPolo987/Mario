@@ -3,7 +3,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.swing.*;
 public class Runner {
 	private JPanel panel;
@@ -11,10 +10,12 @@ public class Runner {
 	public static final int WIDTH = (int) (screenSize.getWidth()*3/4),HEIGHT=(int) (screenSize.getHeight()*3/4);
 	private Game game = new Game();
 	private Timer timer;
-	private Mario mario = new Mario(155, HEIGHT-250);
+	private boolean first=true;
+	private Mario mario = new Mario(155, HEIGHT-270);
 	private MysteryBlock m = new MysteryBlock(150, HEIGHT-200);
-	private Koopa k = new Koopa(150, HEIGHT-50);
-	private Bowser boss = new Bowser(300, 450);
+	private Koopa k = new Koopa(150, HEIGHT-100);
+	private Mushroom  mush = new Mushroom(250, HEIGHT-100);
+	private Bowser boss = new Bowser(300, HEIGHT-100);
 	private int ticks, sx;
 	private Blocks blockss = new Blocks(WIDTH, HEIGHT);
 	private Grounds grounds = new Grounds(WIDTH, HEIGHT);
@@ -59,18 +60,24 @@ public class Runner {
 				}
 				m.draw(g);
 				k.draw(g);
+				//boss.draw(g);
+				mush.draw(g);
 				//				pipe.draw(g);
 				for(Ground ground : ground) {
 					ground.draw(g);
 				}
+				Toolkit.getDefaultToolkit().sync();
 			};	
 		};
 		timer = new Timer(REFRESH_RATE, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				updateGame();
+				
 				mario.move(o);
-				k.move();
+				k.move(mario);
+				//boss.move(mario);
+				mush.move(mario);
 				panel.repaint();
 			}
 		});
@@ -150,11 +157,14 @@ public class Runner {
 	public void keyHit(String s) {
 		System.out.println("In mario game (keyHit): "+s);
 		if(s.equals("right")) {
-			if(mario.getX()!=350) {
+			if(mario.getX()>=WIDTH-50) {
+			
+			}
+			else if(mario.getX()!=350) {
 				mario.moveRight();
 			}
-			else if(ground.get(ground.size()-1).getX()!=800){
-			scrol();
+			else if(ground.get(ground.size()-1).getX()!=WIDTH-50){
+				scrol();
 			}
 			else {
 				mario.moveRight();
@@ -162,21 +172,31 @@ public class Runner {
 		}
 		if(s.equals("left")) {
 			if(mario.getX()>350) {
-				
-				
+				mario.moveLeft();
 				}
 			else if(ground.get(0).getX()!=0){
 				bscrol();
 				}
+			else if(mario.getX()<=0) {
+				
+			}
 			else {
 				mario.moveLeft();
 			}
 		}
 		if(s.equals("space")) {
-			mario.jump();
+			if(first) {
+				mario.jump();
+				first=false;
+			}
+			first=true;
 		}
 		if(s.equals("up")) {
-			mario.jump();
+			if(first) {
+				mario.jump();
+				first=false;
+			}
+			first=true;
 		}
 		if(s.equals("down")) {
 			mario.crouch();
@@ -187,6 +207,7 @@ public class Runner {
 			for(int i = 0; i < blocks.size();i++ ) {
 				blocks.get(i).scroll();
 			}
+			m.scroll();
 			for (int i=0;i<ground.size();i++) {
 				ground.get(i).scroll();
 			}	
@@ -198,6 +219,7 @@ public class Runner {
 			for(int i = 0; i < blocks.size();i++ ) {
 				blocks.get(i).bScroll();
 			}
+			m.bScroll();
 			for (int i=0;i<ground.size();i++) {
 				ground.get(i).bScroll();
 			}	
@@ -205,4 +227,5 @@ public class Runner {
 		
 	}
 }
+
 

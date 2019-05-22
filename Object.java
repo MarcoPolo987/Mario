@@ -1,6 +1,7 @@
 import java.awt.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 public class Object {
@@ -14,14 +15,9 @@ public class Object {
 	private Rectangle feet;
 	private Image im;
 
-	public Object(int w, int h, int x, int y, String str) {
-		width = w;
-		height = h;
+	public Object(int x, int y) {
 		xCord = x;
 		yCord = y;
-		rect = new Rectangle(x,y,w,h);
-		feet = new Rectangle(x,y+h,w,1);
-		im = getImage(str);
 		
 	}
 	
@@ -66,12 +62,15 @@ public class Object {
 	public boolean collide(Object o) {
 		return this.getRect().intersects(o.getRect());
 	}
-	
-	public void fall(Object o) {
-		while(this.feet.intersects(o.getRect())== false) {
-			this.move(0,(int)this.getRect().getY()+(int) (-1*(5*10*Math.sin(90))*time+gravity+time*time/2));
-		}
+
+
+
+	public  int getY() {
+	return 0;
+	}	public  int getX() {
+		return 0;
 	}
+	
 	
 
 }

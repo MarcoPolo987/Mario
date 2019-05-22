@@ -3,6 +3,7 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
@@ -48,31 +49,35 @@ public class Koopa extends EnemyObj {
 	}
 	private boolean t=false;
 	public  void move(Mario m) {
-		if(t) {
-			moveRight();
-			if(x>800) {
-				t=false;
+		System.out.println(collides(m));
+		if(collides(m)!=true) {
+			if(t) {
+				moveRight();
+				if(x>800) {
+					t=false;
+				}
+			}
+			else {
+				moveLeft();
+				if(x<0) {
+					t=true;
+				}
 			}
 		}
-		else {
-			moveLeft();
-		if(x<0) {
-			t=true;
-		}
 	}
-}
-public  void moveRight() {
-	//rect.translate(x+1,y);
-	x+=1;
+	public  void moveRight() {
+		rect.translate(1,0);
+		x+=1;
 	//System.out.println(x);
 	}
 	public  void moveLeft() {
-		//rect.translate(x-1,y+1);
+		rect.translate(-1,0);
 		x-=1;
 	}
 	@Override
 	public void moveuntilcollide(Mario m) {
 		{
+			System.out.println(collides(m));
 			while(collides(m)!=true) {
 				while(x<800) {
 					this.moveRight();

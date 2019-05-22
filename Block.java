@@ -6,7 +6,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-public class Block {
+public class Block extends Object{
 	public final int scrollSpeed = -1;
 	private static final int WIDTH=50;
 	private static final int HEIGHT=50;
@@ -15,11 +15,13 @@ public class Block {
 	 private Image img;
 	
 	 public Block(int x1,int y1) {
+		 super(x1, y1);
 		 x=x1;
 		 y=y1;
+		
 		 this.rect= new Rectangle(x,y,WIDTH,HEIGHT);
 		 try {
-				img=ImageIO.read(this.getClass().getResource("Brick.jpg"));
+				img=ImageIO.read(this.getClass().getResource("block.png"));
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
@@ -27,16 +29,15 @@ public class Block {
 	 public void draw(Graphics g) {
 		 g.drawImage(img, x, y, WIDTH, HEIGHT, null);
 	 }
-	 public Rectangle getBlock() {
+	 public Rectangle getRect() {
 		return this.rect;
 	 }
-	 
 	 public void scroll() {
-		 this.rect.translate(x+scrollSpeed,y);
+		 rect.translate(scrollSpeed,0);
 		 x+=scrollSpeed;
 	 }
 	 public void bScroll() {
-		 this.rect.translate(x-scrollSpeed,y);
+		 rect.translate(-scrollSpeed,0);
 		 x-=scrollSpeed;
 	 }
 }
