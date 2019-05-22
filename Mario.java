@@ -21,7 +21,7 @@ public class Mario extends Character{
 		this.y=y;
 		initX=x;
 		initY=y;
-		rect = new Rectangle(x, y, WIDTH, HEIGHT);
+		rect = new Rectangle(this.x, this.y, WIDTH, HEIGHT);
 		try {
 
 			img=ImageIO.read(this.getClass().getResource("sprite.jpg"));
@@ -36,22 +36,19 @@ public class Mario extends Character{
 	public boolean stand(Ground g) {
 		return super.stand(g);
 	}
-	@Override
-	public void move(int c, int j) {
-		x=c;
-		y=j;
-	}
 	public  void moveRight() {
-		right=true;
+		x+=5;
+		rect.translate(5, 0);
 	}
 	public  void moveLeft() {
-		left=true;
+		x-=5;
+		rect.translate(-5, 0);
 	}
 	public  void jump() {
-		if(onGround) {
-			ySpeed = -20;
-		}
-		up = true;
+		y-=200;
+		initY=y;
+		
+		rect.translate(0, -200);
 	}
 	public  void crouch() {
 	}
@@ -60,47 +57,34 @@ public class Mario extends Character{
 		return this.x;
 	}
 	public boolean collide(Object e) {
-		if (this.rect.intersects(e.getRect())){
+		if (e.getRect().intersects(rect)){
 			return true;
 		}
-		
 		return false;
 	}
 	public boolean isSafe(ArrayList<Object> o) {
 		//int c = 0;
 		for(Object g:o) {
-			System.out.println(collide(g));
-			//System.out.println(rect.getY());
-			//System.out.println(rect.getX());
+			//System.out.println(collide(g));
 			if(collide(g)) {
+				initY=y;
 				time=0;
 				return false;
 				
 			}
 		}
+		
 		return true;
 	}
 	public void move(ArrayList<Object> o) {
-		y += ySpeed;
-		ySpeed += 1;
 		if(isSafe(o)) {	
-			ySpeed=0;
-			onGround=true;
+			time+=.01;
+			int tempY = y;
+			y=initY+(int) (1*(20*10*Math.sin(90))*time+gravity+time*time/2);
+			rect.translate(0, y-tempY);
+			System.out.println(rect.getY());
+			System.out.println(y);
 		}
-		else {
-			onGround=false;
-		}
-		if(left) {
-			x -=5;
-		}
-		if(right) {
-			x += 5;
-		}
-// 		if(isSafe(o)) {	
-// 			time+=.01;
-// 			y=initY+(int) (1*(20*10*Math.sin(90))*time+gravity+time*time/2);
-// 			rect.translate(0, initY+(int) (1*(20*10*Math.sin(90))*time+gravity+time*time/2));
-// 		}
 	}
 	@Override
 	public void draw(Graphics g) {
