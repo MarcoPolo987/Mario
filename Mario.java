@@ -10,7 +10,11 @@ public class Mario extends Character{
 	private int x; private int y;
 	private int initX, initY;
 	private static final int WIDTH=50,HEIGHT=75;
+	private boolean up, down, left, right;
+	private boolean onGround;
 	private Rectangle rect;
+	private Rectangle rr;
+	private Rectangle lr;
 	private static Image spriteSheet;
 	private static Image img;
 	private double time;
@@ -22,6 +26,8 @@ public class Mario extends Character{
 		initX=x;
 		initY=y;
 		rect = new Rectangle(this.x, this.y, WIDTH, HEIGHT);
+		lr = new Rectangle(this.x,this.y,WIDTH-45, HEIGHT- 10);
+		rr = new Rectangle(this.x+45,this.y,WIDTH-45, HEIGHT- 10);
 		try {
 
 			img=ImageIO.read(this.getClass().getResource("sprite.jpg"));
@@ -36,19 +42,36 @@ public class Mario extends Character{
 	public boolean stand(Ground g) {
 		return super.stand(g);
 	}
+	
+	public boolean sideCollide(ArrayList<Block> b) {
+		for(int i = 0; i < b.size(); i++) {
+		if(lr.intersects(b.get(i).getRect())||rr.intersects(b.get(i).getRect())) {
+			return true;
+		}
+			
+		}
+		return false;
+	}
+	
 	public  void moveRight() {
-		x+=5;
-		rect.translate(5, 0);
+		x+=1;
+		rect.translate(1, 0);
+		rr.translate(1,0);
+		lr.translate(1,0);
 	}
 	public  void moveLeft() {
-		x-=5;
-		rect.translate(-5, 0);
+		x-=1;
+		rect.translate(-1, 0);
+		rr.translate(-1,0);
+		lr.translate(-1,0);
 	}
 	public  void jump() {
 		y-=200;
 		initY=y;
 		
 		rect.translate(0, -200);
+		rr.translate(0,-200);
+		lr.translate(0,-200);
 	}
 	public  void crouch() {
 	}
@@ -62,6 +85,7 @@ public class Mario extends Character{
 		}
 		return false;
 	}
+	
 	public boolean isSafe(ArrayList<Object> o) {
 		//int c = 0;
 		for(Object g:o) {
