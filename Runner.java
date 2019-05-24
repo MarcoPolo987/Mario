@@ -8,9 +8,8 @@ public class Runner {
 	private JPanel panel;
 	public static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	public static final int WIDTH = (int) (screenSize.getWidth()*3/4),HEIGHT=(int) (screenSize.getHeight()*3/4);
-	private Game game = new Game();
 	private Timer timer;
-	private boolean up, down, left, right;
+	private boolean up, left, right;
 	private boolean onGround;
 	private Mario mario = new Mario(155, HEIGHT-270);
 	private MysteryBlock m = new MysteryBlock(150, HEIGHT-200);
@@ -104,11 +103,13 @@ public class Runner {
 				if(!mario.isSafe(o)) {
 					onGround=true;
 				}
-				
+//				for(Object u: o)
+//					if(mario.getLR().intersects(u.getRect()))
+//						
 				if(left) {
 					System.out.println(mario.sideCollide(blocks));
 					if(mario.sideCollide(blocks)){
-						
+						mario.moveRight();
 					}
 					else if(mario.getX()>350) {
 						mario.moveLeft();
@@ -130,7 +131,7 @@ public class Runner {
 					
 					}
 					else if(mario.sideCollide(blocks)) {
-						
+						mario.moveLeft();
 					}
 					else if(mario.getX()!=350) {
 						mario.moveRight();
@@ -208,22 +209,31 @@ public class Runner {
 				hit("down");
 			}
 		});
-		panel.getActionMap().put("released", new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				keyUp();
-			}
-			
-		});
+//		panel.getActionMap().put("released", new AbstractAction() {
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				keyUp();
+//			}
+//			
+//		});
 		panel.getInputMap().put(KeyStroke.getKeyStroke("SPACE"),"space");
 		panel.getActionMap().put("space",new AbstractAction(){
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				hit("space");
+				hit("up");
 			}
 		});
 		panel.getInputMap().put(KeyStroke.getKeyStroke("released UP"),"spaceu");
+		panel.getActionMap().put("spaceu",new AbstractAction(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				up=false;
+				onGround=false;
+			}
+		});
+		panel.getInputMap().put(KeyStroke.getKeyStroke("released SPACE"),"spaceu");
 		panel.getActionMap().put("spaceu",new AbstractAction(){
 
 			@Override
@@ -263,11 +273,11 @@ public class Runner {
 		System.out.println("In mario game (keyHit): "+s);
 		if(s.equals("left")) {
 			left=true;
-			right=false;
+			
 		}
 		if(s.equals("right")) {
 			right=true;
-			left=false;
+			
 		}
 		if(s.equals("up")) {
 			up=true;
