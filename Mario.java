@@ -15,6 +15,7 @@ public class Mario extends Character{
 	private Rectangle rect;
 	private Rectangle rr;
 	private Rectangle lr;
+	private Rectangle br;
 	private static Image spriteSheet;
 	private static Image img;
 	private double time;
@@ -26,10 +27,10 @@ public class Mario extends Character{
 		initX=x;
 		initY=y;
 		rect = new Rectangle(this.x, this.y, WIDTH, HEIGHT);
-		lr = new Rectangle(this.x,this.y,WIDTH-45, HEIGHT- 10);
-		rr = new Rectangle(this.x+45,this.y,WIDTH-45, HEIGHT- 10);
+		lr = new Rectangle(this.x,this.y,5, HEIGHT-5);
+		rr = new Rectangle(this.x+45,this.y,5, HEIGHT-5);
+		br = new Rectangle(this.x,this.y+45,WIDTH, 5);
 		try {
-
 			img=ImageIO.read(this.getClass().getResource("sprite.jpg"));
 		} catch (IOException e1) {
 			e1.printStackTrace();
@@ -37,6 +38,9 @@ public class Mario extends Character{
 	}
 	public Rectangle getRect() {
 		return rect;
+	}
+	public Rectangle getSpecR() {
+		return br;
 	}
 	
 	public boolean stand(Ground g) {
@@ -56,19 +60,21 @@ public class Mario extends Character{
 	public  void moveRight() {
 		x+=1;
 		rect.translate(1, 0);
+		br.translate(-1, 0);
 		rr.translate(1,0);
 		lr.translate(1,0);
 	}
 	public  void moveLeft() {
 		x-=1;
 		rect.translate(-1, 0);
+		br.translate(-1, 0);
 		rr.translate(-1,0);
 		lr.translate(-1,0);
 	}
 	public  void jump() {
 		y-=200;
 		initY=y;
-		
+		br.translate(0, -200);
 		rect.translate(0, -200);
 		rr.translate(0,-200);
 		lr.translate(0,-200);
@@ -106,6 +112,9 @@ public class Mario extends Character{
 			int tempY = y;
 			y=initY+(int) (1*(20*10*Math.sin(90))*time+gravity+time*time/2);
 			rect.translate(0, y-tempY);
+			br.translate(0, y-tempY);
+			rr.translate(0, y-tempY);
+			lr.translate(0, y-tempY);
 			System.out.println(rect.getY());
 			System.out.println(y);
 		}
@@ -114,14 +123,6 @@ public class Mario extends Character{
 	public void draw(Graphics g) {
 		g.drawImage(img, x, y, WIDTH, HEIGHT, null);
 	}
-	private boolean t = true;
 	public void fall(ArrayList<Ground> ground) {
-		
-		while(t) {
-			time+=.01;
-			move();
-			for(int i=0; i<ground.size(); i++)
-				System.out.println(ground.get(i).getRect().intersects(rect));
-		}
 	}
 }
