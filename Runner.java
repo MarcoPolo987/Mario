@@ -11,12 +11,14 @@ public class Runner {
 	private Timer timer;
 	private boolean up, left, right;
 	private boolean onGround;
-	private Mario mario = new Mario(155, HEIGHT-270);
+	private Lives life = new Lives(WIDTH-150, 0);
+	private Mario mario = new Mario(155, HEIGHT-273);
 	private MysteryBlock m = new MysteryBlock(150, HEIGHT-200);
 	private Koopa k = new Koopa(150, HEIGHT-100);
 	private Mushroom  mush = new Mushroom(250, HEIGHT-100);
 	private Bowser boss = new Bowser(300, HEIGHT-100);
 	private int ticks, sx;
+	private GameOver gg = new GameOver(0, 0);
 	private Blocks blockss = new Blocks(WIDTH, HEIGHT);
 	private Grounds grounds = new Grounds(WIDTH, HEIGHT);
 	private Grounds obstacles = new Grounds(WIDTH, HEIGHT);
@@ -75,6 +77,9 @@ public class Runner {
 				m.draw(g);
 				k.draw(g);
 				mush.draw(g);
+				if(life.getLives()==0) {
+					gg.draw(g);
+				}
 				//				pipe.draw(g);
 				for(Ground ground : ground) {
 					ground.draw(g);
@@ -82,6 +87,7 @@ public class Runner {
 				for(Ground f : obstacle) {
 					f.draw(g);
 				}
+				life.draw(g);
 				Toolkit.getDefaultToolkit().sync();
 			};	
 		};
@@ -96,9 +102,9 @@ public class Runner {
 					mush.remove();
 				}
 				mario.move(o);
-				k.move(mario);
+				k.move(mario, o);
 				//boss.move(mario);
-				mush.move(mario);
+				mush.move(mario, o);
 				onGround=false;
 				if(!mario.isSafe(o)) {
 					onGround=true;
@@ -107,8 +113,9 @@ public class Runner {
 //					if(mario.getLR().intersects(u.getRect()))
 //						
 				if(left) {
-					System.out.println(mario.sideCollide(blocks));
-					if(mario.sideCollide(blocks)){
+					
+					if(mario.sideCollide(o)){
+						right=false;
 						mario.moveRight();
 					}
 					else if(mario.getX()>350) {
@@ -126,11 +133,12 @@ public class Runner {
 					}
 				}
 				if(right) {
-					System.out.println(mario.sideCollide(blocks));
+					
 					if(mario.getX()>=WIDTH-50) {
 					
 					}
-					else if(mario.sideCollide(blocks)) {
+					else if(mario.sideCollide(o)) {
+						left=false;
 						mario.moveLeft();
 					}
 					else if(mario.getX()!=350) {

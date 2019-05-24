@@ -27,8 +27,8 @@ public class Mario extends Character{
 		initX=x;
 		initY=y;
 		rect = new Rectangle(this.x, this.y, WIDTH, HEIGHT);
-		lr = new Rectangle(this.x,this.y,5, HEIGHT-5);
-		rr = new Rectangle(this.x+45,this.y,5, HEIGHT-5);
+		lr = new Rectangle(this.x,this.y,5, HEIGHT-2);
+		rr = new Rectangle(this.x+45,this.y,5, HEIGHT-2);
 		br = new Rectangle(this.x,this.y+45,WIDTH, 5);
 		try {
 			img=ImageIO.read(this.getClass().getResource("sprite.jpg"));
@@ -47,7 +47,7 @@ public class Mario extends Character{
 		return super.stand(g);
 	}
 	
-	public boolean sideCollide(ArrayList<Block> b) {
+	public boolean sideCollide(ArrayList<Object> b) {
 		for(int i = 0; i < b.size(); i++) {
 		if(lr.intersects(b.get(i).getRect())||rr.intersects(b.get(i).getRect())) {
 			return true;
@@ -60,7 +60,7 @@ public class Mario extends Character{
 	public  void moveRight() {
 		x+=1;
 		rect.translate(1, 0);
-		br.translate(-1, 0);
+		br.translate(1, 0);
 		rr.translate(1,0);
 		lr.translate(1,0);
 	}
