@@ -24,6 +24,7 @@ public class Runner {
 	private Grounds obstacles = new Grounds(WIDTH, HEIGHT);
 	private static final int REFRESH_RATE = 10;
 	private ArrayList<Object> o = new ArrayList<>();
+	ArrayList<MysteryBlock> mb = new ArrayList<MysteryBlock>();
 	ArrayList<Ground> ground = grounds.getGround(); 
 	ArrayList<Ground> obstacle = obstacles.getGround(); 
 	ArrayList<Block> blocks = blockss.getBlocks(); 
@@ -40,6 +41,30 @@ public class Runner {
 		panel.repaint();
 	}
 	public void start() {
+		mb.add(m);
+		obstacle.add(new Ground(1700, 575));
+		obstacle.add(new Ground(1750, 575));
+		obstacle.add(new Ground(1750, 525));
+		blocks.add(new Block(2700, 500));
+		blocks.add(new Block(2750, 500));
+		blocks.add(new Block(3000, 500));
+		blocks.add(new Block(3250, 500));
+		blocks.add(new Block(3300, 500));
+		blocks.add(new Block(3500, 500));
+		blocks.add(new Block(3700, 500));
+		blocks.add(new Block(3750, 500));
+		blocks.add(new Block(4000, 500));
+		obstacle.add(new Ground(4900, 575));
+		obstacle.add(new Ground(4950, 575));
+		obstacle.add(new Ground(4950, 525));
+		obstacle.add(new Ground(5250, 575));
+		obstacle.add(new Ground(5300, 575));
+		obstacle.add(new Ground(5250, 525));
+		blocks.add(new Block(5700,475));
+		blocks.add(new Block(5750,475));
+		blocks.add(new Block(5850,475));
+		blocks.add(new Block(6000,475));
+		mb.add(new MysteryBlock(5800, 475));
 		for(int i=1; i<4; i++) {
 			for(int y=0; y<=i; y++) {
 				obstacle.add(new Ground(obstacle.get(i+20).getX(), obstacle.get(i+20).getY()-(50*y)));
@@ -56,6 +81,9 @@ public class Runner {
 		}
 		for(Ground f : obstacle) {
 			o.add(f);
+		}
+		for(MysteryBlock m : mb) {
+			o.add(m);
 		}
 		for(Block b : blocks) {
 			o.add(b);
@@ -85,6 +113,12 @@ public class Runner {
 					f.draw(g);
 				}
 				life.draw(g);
+				if(mario.getY()>(int) (screenSize.getHeight()*3/4)) {
+					life.lose1();
+					life.lose1();
+					life.lose1();
+					life.lose1();
+				}
 				if(life.getLives()==0) {
 					gg.draw(g);
 					restart();
@@ -273,7 +307,7 @@ public class Runner {
 		});
 	}
 	public void restart() {
-		//if(space) {
+		if(space) {
 			if(ground.get(0).getX()<0) {
 				while(ground.get(0).getX()<0) {
 					bscrol();
@@ -285,7 +319,7 @@ public class Runner {
 			mush = new Mushroom(300, HEIGHT-100);
 			space=false;
 		}
-	//}
+	}
 	public void keyUp() {
 		left=false;
 		up=false;
@@ -347,5 +381,4 @@ public class Runner {
 		
 	}
 }
-
 
