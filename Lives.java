@@ -27,6 +27,17 @@ public class Lives {
 	public void lose1() {
 		if(lives>0)
 			lives--;
+		
+	}
+	public void gain1(Mario m,MysteryBlock mb) {
+		int count =0;
+		if (mb.getRect().intersects(m.getRect())) {
+			count++;
+		}
+		if(count==1) {
+			lives++;
+		}
+	
 	}
 	public void set(int i) {
 		lives = i;
@@ -34,6 +45,7 @@ public class Lives {
 	public void draw(Graphics g) {
 		for(int i=0; i<lives; i++) {
 			g.drawImage(img, x+50*i, y, WIDTH, HEIGHT, null);
+		//	System.out.println(lives);
 		}
 	}
 }
