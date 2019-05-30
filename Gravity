@@ -1,5 +1,0 @@
-	public void move() {
-		time+=.01;
-		x=initX+(int) ((speed*10*Math.cos(angle))*time);
-		y=initY+(int) (-1*(speed*10*Math.sin(angle))*time+gravity+time*time/2);
-	}
