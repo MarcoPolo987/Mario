@@ -10,9 +10,12 @@ public class Runner {
 	public static final int WIDTH = (int) (screenSize.getWidth()*3/4),HEIGHT=(int) (screenSize.getHeight()*3/4);
 	private Timer timer;
 	private boolean up, left, right, space;
+	private boolean chicken = false;
 	private boolean onGround;
-	private Lives life = new Lives(WIDTH-150, 0);
-	private Mario mario = new Mario(155, HEIGHT-273);
+	private Win win = new Win(0, 0);
+	private Lives life = new Lives(WIDTH-200, 0);
+	private Flag flag = new Flag(7000, HEIGHT-350);
+	private Mario mario = new Mario(300, HEIGHT-273);
 	private MysteryBlock m = new MysteryBlock(150, HEIGHT-200);
 	private Koopa k = new Koopa(150, HEIGHT-100);
 	private Mushroom  mush = new Mushroom(250, HEIGHT-100);
@@ -62,9 +65,25 @@ public class Runner {
 		obstacle.add(new Ground(5250, 525));
 		blocks.add(new Block(5700,475));
 		blocks.add(new Block(5750,475));
+		mb.add(new MysteryBlock(5800, 475));
 		blocks.add(new Block(5850,475));
 		blocks.add(new Block(6000,475));
-		mb.add(new MysteryBlock(5800, 475));
+		blocks.add(new Block(6800,575));
+		blocks.add(new Block(6800,525));
+		blocks.add(new Block(6800,475));
+		blocks.add(new Block(6800,425));
+		blocks.add(new Block(6800,375));
+		blocks.add(new Block(6750,575));
+		blocks.add(new Block(6750,525));
+		blocks.add(new Block(6750,475));
+		blocks.add(new Block(6750,425));
+		blocks.add(new Block(6700,575));
+		blocks.add(new Block(6700,525));
+		blocks.add(new Block(6700,475));
+		blocks.add(new Block(6650,575));
+		blocks.add(new Block(6650,525));
+		blocks.add(new Block(6600,575));
+		
 		for(int i=1; i<4; i++) {
 			for(int y=0; y<=i; y++) {
 				obstacle.add(new Ground(obstacle.get(i+20).getX(), obstacle.get(i+20).getY()-(50*y)));
@@ -88,6 +107,7 @@ public class Runner {
 		for(Block b : blocks) {
 			o.add(b);
 		}
+		o.add(flag);
 		o.add(m);
 		JFrame frame = new JFrame("Mario!");
 		timer = new Timer(sx, null);
@@ -102,7 +122,10 @@ public class Runner {
 				for(Block block : blocks){
 					block.draw(g);
 				}		
-				m.draw(g);
+				flag.draw(g);
+				for(int i = 0; i < mb.size(); i++) {
+					mb.get(i).draw(g);
+				}
 				k.draw(g);
 				mush.draw(g);
 				//				pipe.draw(g);
@@ -123,6 +146,10 @@ public class Runner {
 					gg.draw(g);
 					restart();
 				}
+				if(chicken) {
+					win.draw(g);
+					restart();
+				}
 				Toolkit.getDefaultToolkit().sync();
 			};	
 		};
@@ -130,11 +157,16 @@ public class Runner {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				updateGame();
+				life.gain1(mario, m);
 				if(k.enemycoll(mario)) {
 					k.remove();
 				}
 				if(mush.enemycoll(mario)) {
 					mush.remove();
+				}
+				if(mario.getRect().intersects(flag.getRect())) {
+					chickenDinner();
+
 				}
 				mario.move(o);
 				k.move(mario, o, life);
@@ -306,6 +338,10 @@ public class Runner {
 			}
 		});
 	}
+	protected void chickenDinner() {
+		chicken=true;
+		
+	}
 	public void restart() {
 		if(space) {
 			if(ground.get(0).getX()<0) {
@@ -313,11 +349,12 @@ public class Runner {
 					bscrol();
 				}
 			}
-			mario = new Mario(155, HEIGHT-273);
+			mario = new Mario(300, HEIGHT-273);
 			k = new Koopa(150, HEIGHT-100);
 			life.set(3);
 			mush = new Mushroom(300, HEIGHT-100);
 			space=false;
+			chicken=false;
 		}
 	}
 	public void keyUp() {
@@ -327,7 +364,6 @@ public class Runner {
 	}
 	public  void hit(String s) {
 		keyHit(s);
-		//System.out.println(mario.getX()+""+ mario.getY());
 		
 	}
 	public void keyHit(String s) {
@@ -341,7 +377,7 @@ public class Runner {
 			
 		}
 		if(s.equals("up")) {
-			if(life.getLives()==0) {
+			if(life.getLives()==0 || chicken==true) {
 				space=true;
 			}
 			up=true;
@@ -351,7 +387,7 @@ public class Runner {
 		}
 	}
 	private void scrol() {
-		for(int q = 0; q < 5; q++) {
+		for(int q = 0; q < 2; q++) {
 			for(int i = 0; i < blocks.size();i++ ) {
 				blocks.get(i).scroll();
 			}
@@ -362,11 +398,13 @@ public class Runner {
 			for (int i=0;i<obstacle.size();i++) {
 				obstacle.get(i).scroll();
 			}	
+			flag.scroll();
 		}
 		
 	}
 	private void bscrol() {
-		for(int q = 0; q < 5; q++) {
+		
+		for(int q = 0; q < 2; q++) {
 			for(int i = 0; i < blocks.size();i++ ) {
 				blocks.get(i).bScroll();
 			}
@@ -377,6 +415,7 @@ public class Runner {
 			for (int i=0;i<obstacle.size();i++) {
 				obstacle.get(i).bScroll();
 			}	
+			flag.bScroll();
 		}
 		
 	}

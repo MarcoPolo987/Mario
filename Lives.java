@@ -11,11 +11,13 @@ public class Lives {
 	public static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	public static final int WIDTH = 50,HEIGHT = 50;
 	private Image img;
+	private int count =0;
+
 	public Lives(int x1,int y1) {
 		x=x1;
 		y=y1;
 		try {
-			img = ImageIO.read(this.getClass().getResource("heart.png"));
+			img = ImageIO.read(this.getClass().getResource("heart .png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -27,10 +29,11 @@ public class Lives {
 	public void lose1() {
 		if(lives>0)
 			lives--;
-		
+	}
+	public void set(int i) {
+		lives = i;
 	}
 	public void gain1(Mario m,MysteryBlock mb) {
-		int count =0;
 		if (mb.getRect().intersects(m.getRect())) {
 			count++;
 		}
@@ -39,13 +42,9 @@ public class Lives {
 		}
 	
 	}
-	public void set(int i) {
-		lives = i;
-	}
 	public void draw(Graphics g) {
 		for(int i=0; i<lives; i++) {
 			g.drawImage(img, x+50*i, y, WIDTH, HEIGHT, null);
-		//	System.out.println(lives);
 		}
 	}
 }

@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
@@ -43,7 +44,7 @@ public abstract class EnemyObj {
 	}
 	public abstract int getX();
 	public abstract int getY();
-	 public void move() {
+	 public void move(Mario mario, ArrayList<Object> o, Lives life) {
 		 //rect.translate(x,y);
 	 }
 //	 public  void moveRight() {

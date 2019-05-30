@@ -25,7 +25,7 @@ public class Mushroom extends EnemyObj  {
 		lr = new Rectangle(this.x,this.y,5, HEIGHT-2);
 		rr = new Rectangle(this.x+45,this.y,5, HEIGHT-2);
 		try {
-			myPicture = ImageIO.read(this.getClass().getResource("goomba.jpg"));
+			myPicture = ImageIO.read(this.getClass().getResource("goomba.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -62,13 +62,18 @@ public class Mushroom extends EnemyObj  {
 		if(!collides(m)) {
 			if(t && sideCollide(b)==false) {
 				moveRight();
-				if(x>800) {
-					t=false;
+				for(int i = 0; i < b.size(); i++) {
+					if(b.get(i).getRect().intersects(this.rect)) {
+						t=false;
+					}
 				}
+
+					
+				
 			}
 			else {
 				moveLeft();
-				if(x<0) {
+				if(b.get(0).getX()== this.x) {
 					t=true;
 				}
 			}

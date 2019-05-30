@@ -33,7 +33,7 @@ public class Mario extends Character{
 		rr = new Rectangle(this.x+45,this.y,5, HEIGHT-2);
 		br = new Rectangle(this.x,this.y+HEIGHT,WIDTH, 5);
 		try {
-			img=ImageIO.read(this.getClass().getResource("sprite.jpg"));
+			img=ImageIO.read(this.getClass().getResource("mario.png"));
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -92,6 +92,9 @@ public class Mario extends Character{
 	
 	public int getX() {
 		return this.x;
+	}
+	public int getY() {
+		return this.y;
 	}
 	public boolean collide(Object e) {
 		if (e.getRect().intersects(rect)){

@@ -26,7 +26,7 @@ public class Koopa extends EnemyObj {
 		this.r= new Rectangle(x,y-5,WIDTH,5);
 		
 		try {
-			myPicture= ImageIO.read(this.getClass().getResource("images.png"));
+			myPicture= ImageIO.read(this.getClass().getResource("koopa.png"));
 		}
 		catch(IOException e) {
 			e.printStackTrace();
@@ -88,20 +88,22 @@ public class Koopa extends EnemyObj {
 	}
 	private boolean t=false;
 	public  void move(Mario m, ArrayList<Object> o, Lives life) {
-		//System.out.println(collides(m));
-		if(collides(m)!=true) {
+		if(!collides(m)) {
 			if(t && sideCollide(o)==false) {
 				moveRight();
-				if(x>800) {
-					t=false;
+				for(int i = 0; i < o.size(); i++) {
+					if(o.get(i).getRect().intersects(this.rect)) {
+						t=false;
+					}
 				}
+
+					
+				
 			}
 			else {
-				if(sideCollide(o)==false) {
-					moveLeft();
-					if(x<0) {
-						t=true;
-					}
+				moveLeft();
+				if(o.get(0).getX()== this.x) {
+					t=true;
 				}
 			}
 		}
